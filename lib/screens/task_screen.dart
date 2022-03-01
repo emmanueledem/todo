@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/widgets/task_list.dart';
-
+import 'package:todo/list.dart';
 import 'add_taskScreen.dart';
 
 class TaskScreen extends StatelessWidget {
-  const TaskScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,8 +12,9 @@ class TaskScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
-              context: context,
-              builder: (BuildContext context) => const AddTaskScreen());
+            context: context,
+            builder: (BuildContext context) => AddTaskScreen(),
+          );
         },
         child: const Icon(Icons.add),
         backgroundColor: Colors.lightBlueAccent,
@@ -26,8 +27,8 @@ class TaskScreen extends StatelessWidget {
                 top: 60.0, left: 30.0, right: 30.0, bottom: 30.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CircleAvatar(
+              children: [
+                const CircleAvatar(
                   radius: 30.0,
                   backgroundColor: Colors.white,
                   child: Icon(
@@ -36,10 +37,10 @@ class TaskScreen extends StatelessWidget {
                     size: 30.0,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10.0,
                 ),
-                Text(
+                const Text(
                   'Todo',
                   style: TextStyle(
                       color: Colors.white,
@@ -47,15 +48,15 @@ class TaskScreen extends StatelessWidget {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '12 Tasks',
-                  style: TextStyle(color: Colors.white, fontSize: 18.0),
+                  '${Provider.of<Data>(context).taskCount} Tasks',
+                  style: const TextStyle(color: Colors.white, fontSize: 18.0),
                 ),
               ],
             ),
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 20.0,
               ),
               decoration: const BoxDecoration(

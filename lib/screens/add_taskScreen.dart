@@ -1,8 +1,17 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/list.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({Key? key}) : super(key: key);
+class AddTaskScreen extends StatefulWidget {
+  Function? addTaskCallBack;
+  @override
+  State<AddTaskScreen> createState() => _AddTaskScreenState();
+}
+
+class _AddTaskScreenState extends State<AddTaskScreen> {
+  String? newTaskTitle;
+  final textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +42,45 @@ class AddTaskScreen extends StatelessWidget {
                 const SizedBox(
                   height: 30.0,
                 ),
-                const TextField(
+                TextField(
+                  controller: textController,
                   autofocus: true,
                   textAlign: TextAlign.center,
+                  onChanged: (newText) {
+                    newTaskTitle = newText;
+                  },
                 ),
                 const SizedBox(
                   height: 30.0,
                 ),
                 TextButton(
-                  onPressed: null,
+                  onPressed: () {
+                    if (newTaskTitle == null) {
+                      Alert(
+                        context: context,
+                        type: AlertType.error,
+                        title: "Opps",
+                        desc: "Please Fill the TextField",
+                        buttons: [
+                          DialogButton(
+                            child: const Text(
+                              "Okay",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            color: const Color.fromRGBO(0, 179, 134, 1.0),
+                            radius: BorderRadius.circular(0.0),
+                          ),
+                        ],
+                      ).show();
+                    } else {
+                      Provider.of<Data>(context, listen: false)
+                          .addNewItem(newTaskTitle);
+                      Navigator.pop(context);
+                      textController.clear();
+                    }
+                  },
                   child: const Text(
                     'Add',
                     style: TextStyle(color: Colors.white),
